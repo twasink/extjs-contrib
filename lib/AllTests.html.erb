@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <style>
+    #left{
+        display: inline-block;
+        height:100%;
+        vertical-align: top;
+    }
+
+    #right{
+      display: inline-block;
+      height:100%;
+      width: 1000px;
+    }
+    #test_window {
+      height:100%;
+      width: 99%;
+    }
+    </style>
+  </head>
+  <body>
+    <!-- simple two-column layout, left & right -->
+    <div id="left">
+      <h1>Tests</h1>
+      <ul>
+        <% spec_names.each do |spec_name| %>
+        <li><a href="<%= spec_name %>Test.html" target="_blank"><%= spec_name %></a>
+        <% end %>
+      </ul>
+    </div>
+    <script type="text/javascript">
+function show(test_page) {
+  document.getElementById('test_window').src = test_page
+}
+    </script>
+  </body>
+</html>
