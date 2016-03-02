@@ -1,0 +1,61 @@
+--- a/jasmine-2.3.4/lib/jasmine-2.3.4/boot.js
++++ b/jasmine-2.3.4/lib/jasmine-2.3.4/boot.js
+@@ -102,14 +102,16 @@
+    */
+   var currentWindowOnload = window.onload;
+ 
+-  window.onload = function() {
+-    if (currentWindowOnload) {
+-      currentWindowOnload();
+-    }
+-    htmlReporter.initialize();
+-    env.execute();
+-  };
+-
++  // Disable executing the environment immediately - we need the ExtJS framework to load first.
++  // window.onload = function() {
++  //   if (currentWindowOnload) {
++  //     currentWindowOnload();
++  //   }
++  //   htmlReporter.initialize();
++  //   env.execute();
++  // };
++  window.extjs_jasmine = { htmlReporter: htmlReporter, env: env }
++  
+   /**
+    * Helper function for readability above.
+    */
+diff --git a/jasmine-2.3.4/lib/jasmine-2.3.4/jasmine-html.js b/jasmine-2.3.4/lib/jasmine-2.3.4/jasmine-html.js
+index 259f45c..176bc86 100644
+--- a/jasmine-2.3.4/lib/jasmine-2.3.4/jasmine-html.js
++++ b/jasmine-2.3.4/lib/jasmine-2.3.4/jasmine-html.js
+@@ -201,7 +201,9 @@ jasmineRequire.HtmlReporter = function(j$) {
+         );
+       }
+       var statusBarMessage = '';
+-      var statusBarClassName = 'bar ';
++      // var statusBarClassName = 'bar ';
++      // EXTJS: Added an explicit class for the status bar to keep jasmine-junit happy
++      var statusBarClassName = 'bar statusbar ';
+ 
+       if (totalSpecsDefined > 0) {
+         statusBarMessage += pluralize('spec', specsExecuted) + ', ' + pluralize('failure', failureCount);
+diff --git a/jasmine-2.3.4/lib/jasmine-2.3.4/jasmine.js b/jasmine-2.3.4/lib/jasmine-2.3.4/jasmine.js
+index 312d591..9c83c20 100644
+--- a/jasmine-2.3.4/lib/jasmine-2.3.4/jasmine.js
++++ b/jasmine-2.3.4/lib/jasmine-2.3.4/jasmine.js
+@@ -1606,6 +1606,11 @@ getJasmineRequireObj().pp = function(j$) {
+         this.emitScalar('HTMLNode');
+       } else if (value instanceof Date) {
+         this.emitScalar('Date(' + value + ')');
++      // <<<<<<<<< BEGIN EXTJS SUPPORT
++      } else if (Ext && Ext.Base && value instanceof Ext.Base) {
++        this.emitScalar('<Ext Object> ' + Ext.ClassManager.getName(value));
++        return false;
++      // <<<<<<<<< END EXTJS SUPPORT
+       } else if (j$.util.arrayContains(this.seen, value)) {
+         this.emitScalar('<circular reference: ' + (j$.isArray_(value) ? 'Array' : 'Object') + '>');
+       } else if (j$.isArray_(value) || j$.isA_('Object', value)) {
+-- 
+2.6.3
+

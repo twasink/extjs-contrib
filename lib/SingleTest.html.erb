@@ -58,10 +58,10 @@ To create the test page, use ./bin/run_js_tests.rb (from the root of the directo
       
       Ext.defer(function() {
         var JUnitXmlReporter = jasmineRequire.JUnitXmlReporter()
-        jasmine.env.addReporter(new JUnitXmlReporter());
+        window.extjs_jasmine.env.addReporter(new JUnitXmlReporter());
   
-        jasmine.htmlReporter.initialize()
-        jasmine.env.execute()
+        window.extjs_jasmine.htmlReporter.initialize()
+        window.extjs_jasmine.env.execute()
       }, 1); // Do this a beat after the launch, in case there's a need for classes to initialise themselves.
     }
   })

@@ -20,7 +20,7 @@ def parse_options()
   
     opts.on('-r', '--refresh', 'Refresh/rebuild test files [default]') { |r| options[:refresh] = true }
     opts.on('-R', '--norefresh', 'Do not refresh/rebuild test files') { |r| options[:refresh] = false }
-    opts.on('-S', '--skip', 'Skip running the tests; normally used in conjunction with --refresh') { |r| options[:skip] = true }
+    opts.on('-s', '--skip', 'Skip running the tests; normally used in conjunction with --refresh') { |r| options[:skip] = true }
     opts.on('-u', '--ugly', 'Disable CSS') { |r| options[:css] = false }
   end.parse!
 
